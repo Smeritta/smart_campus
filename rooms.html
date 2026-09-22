@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Management</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <h2>⚡ EMS</h2>
+
+        <a href="/dashboard">Dashboard</a>
+        <a href="/rooms">Rooms</a>
+        <a href="/complaints">Complaints</a>
+        <a href="/reports">Reports</a>
+        <a href="/" class="logout">Logout</a>
+    </aside>
+
+    <main class="main-content">
+
+        <div class="topbar">
+            <h1>Room Management</h1>
+            <p>Manage college rooms and electricity monitoring details.</p>
+        </div>
+
+        <section class="panel">
+
+            <h2>Add Room</h2>
+
+            <form class="room-form" action="/add_room" method="POST">
+
+                <div class="form-row">
+
+                    <div>
+                        <label>Room Number</label>
+                        <input type="text"
+       name="room_no"
+       placeholder="Example: CSE-101"
+       required>
+                    </div>
+
+                    <div>
+                        <label>Block</label>
+                        <select name="block" required>
+                            <option value="">Select Block</option>
+                            <option>Main Block</option>
+                            <option>Admin Block</option>
+                            <option>AI & DS Block</option>
+                            <option>ECE Block</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+
+                    <div>
+                        <label>Department</label>
+                        <input type="text"
+                               name="department"
+                               placeholder="Example: AI & DS"
+                               required>
+                    </div>
+
+                    <div>
+                        <label>Room Type</label>
+                        <select name="room_type" required>
+                            <option value="">Select Type</option>
+                            <option>Classroom</option>
+                            <option>Laboratory</option>
+                            <option>Staff Room</option>
+                            <option>Seminar Hall</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="primary-btn">
+                    Add Room
+                </button>
+
+            </form>
+
+        </section>
+
+        <section class="panel room-list">
+
+            <h2>Registered Rooms</h2>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Room No</th>
+                        <th>Block</th>
+                        <th>Department</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+{% for room in rooms %}
+
+<tr>
+    <td>{{ room["room_no"] }}</td>
+    <td>{{ room["block"] }}</td>
+    <td>{{ room["department"] }}</td>
+    <td>{{ room["room_type"] }}</td>
+    <td>{{ room["status"] }}</td>
+</tr>
+
+{% else %}
+
+<tr>
+    <td colspan="5">
+        No rooms registered yet.
+    </td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

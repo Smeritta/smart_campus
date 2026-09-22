@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Electricity Management System</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <div class="logo">⚡</div>
+
+        <h1>Electricity Management System</h1>
+
+        <p class="subtitle">
+            Electricity Waste Detection & Complaint Management
+        </p>
+
+        <form action="/login" method="post">
+
+            <label>Email</label>
+            <input type="email"
+                   name="email"
+                   placeholder="Enter your email"
+                   required>
+
+            <label>Password</label>
+            <input type="password"
+                   name="password"
+                   placeholder="Enter your password"
+                   required>
+
+            <label>Role</label>
+            <select name="role" required>
+                <option value="">Select Role</option>
+                <option>Admin</option>
+                <option>Staff</option>
+                <option>Student</option>
+            </select>
+
+            <button type="submit">Login</button>
+
+        </form>
+
+        <p class="demo-text">
+            College Project Demo
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

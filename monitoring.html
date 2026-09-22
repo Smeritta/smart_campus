@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Electricity Monitoring</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+
+        <h2>⚡ EMS</h2>
+
+        <a href="/dashboard">Dashboard</a>
+        <a href="/rooms">Rooms</a>
+        <a href="/monitoring">Monitoring</a>
+        <a href="/complaints">Complaints</a>
+        <a href="/reports">Reports</a>
+
+        <a href="/" class="logout">Logout</a>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <div class="topbar">
+
+            <h1>Electricity Monitoring</h1>
+
+            <p>
+                Detect abnormal electricity usage
+                in empty rooms.
+            </p>
+
+        </div>
+
+
+        <!-- SIMULATION -->
+
+        <section class="panel">
+
+            <h2>Simulate Electricity Reading</h2>
+
+            <p class="info-text">
+                Enter room conditions to test automatic
+                electricity waste detection.
+            </p>
+
+
+            <form action="/simulate"
+                  method="POST"
+                  class="room-form">
+
+
+                <div class="form-row">
+
+                    <div>
+
+                        <label>Room Number</label>
+
+                        <input type="text"
+                               name="room_no"
+                               placeholder="Example: AI-201"
+                               required>
+
+                    </div>
+
+
+                    <div>
+
+                        <label>Occupancy</label>
+
+                        <select name="occupancy" required>
+
+                            <option value="">
+                                Select Occupancy
+                            </option>
+
+                            <option value="Occupied">
+                                Occupied
+                            </option>
+
+                            <option value="Empty">
+                                Empty
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <label>Power Usage (kW)</label>
+
+                    <input type="number"
+                           name="power_usage"
+                           step="0.1"
+                           min="0"
+                           placeholder="Example: 3.2"
+                           required>
+
+                </div>
+
+
+                <button type="submit"
+                        class="primary-btn">
+
+                    Check Electricity Usage
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- ALERTS -->
+
+        <section class="panel room-list">
+
+            <h2>Waste Detection Alerts</h2>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Room</th>
+                        <th>Occupancy</th>
+                        <th>Power Usage</th>
+                        <th>Message</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for alert in alerts %}
+
+                    <tr>
+
+                        <td>
+                            #{{ alert["id"] }}
+                        </td>
+
+                        <td>
+                            {{ alert["room_no"] }}
+                        </td>
+
+                        <td>
+                            {{ alert["occupancy"] }}
+                        </td>
+
+                        <td>
+                            {{ alert["power_usage"] }} kW
+                        </td>
+
+                        <td class="danger">
+                            ⚠ {{ alert["message"] }}
+                        </td>
+
+                        <td>
+                            {{ alert["status"] }}
+                        </td>
+
+                    </tr>
+
+                {% else %}
+
+                    <tr>
+
+                        <td colspan="6">
+                            No electricity waste detected.
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+</body>
+</html>

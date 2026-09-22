@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+
+        <h2>⚡ EMS</h2>
+
+        <a href="/dashboard">Dashboard</a>
+        <a href="/rooms">Rooms</a>
+        <a href="/monitoring">Monitoring</a>
+        <a href="/complaints">Complaints</a>
+        <a href="/reports">Reports</a>
+
+        <a href="/" class="logout">Logout</a>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <div class="topbar">
+
+            <h1>Reports & Analytics</h1>
+
+            <p>
+                Electricity usage and complaint summary.
+            </p>
+
+        </div>
+
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Rooms</h3>
+                <p class="number">{{ total_rooms }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Complaints</h3>
+                <p class="number">{{ total_complaints }}</p>
+            </div>
+
+            <div class="card alert-card">
+                <h3>Waste Alerts</h3>
+                <p class="number">{{ total_alerts }}</p>
+            </div>
+
+        </div>
+
+
+        <section class="panel">
+
+            <h2>Waste Detection Summary</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Room</th>
+                        <th>Occupancy</th>
+                        <th>Power Usage</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for alert in alerts %}
+
+                    <tr>
+
+                        <td>
+                            {{ alert["room_no"] }}
+                        </td>
+
+                        <td>
+                            {{ alert["occupancy"] }}
+                        </td>
+
+                        <td>
+                            {{ alert["power_usage"] }} kW
+                        </td>
+
+                        <td class="danger">
+                            ⚠ Waste Detected
+                        </td>
+
+                    </tr>
+
+                {% else %}
+
+                    <tr>
+
+                        <td colspan="4">
+                            No waste alerts available.
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+{% if alerts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    showAlert();
+});
+</script>
+{% endif %}
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <h2>⚡ EMS</h2>
+
+        <a href="/dashboard">Dashboard</a>
+        {% if session.get("role") == "Admin" %}
+<a href="/rooms">Rooms</a>
+{% endif %}
+        {% if session.get("role") in ["Admin", "Staff"] %}
+<a href="/monitoring">Monitoring</a>
+{% endif %}
+        <a href="/complaints">Complaints</a>
+        {% if session.get("role") in ["Admin", "Staff"] %}
+<a href="/reports">Reports</a>
+{% endif %}
+        <a href="/logout">Logout</a>
+    </aside>
+
+    <main class="main-content">
+        <div id="alertBox" class="alert-popup">
+    <span>⚠️</span>
+    <div>
+        <strong>Electricity Waste Alert</strong>
+        <p>High electricity usage detected in an empty room.</p>
+    </div>
+    <button onclick="closeAlert()">×</button>
+</div>
+
+        <div class="topbar">
+            <div>
+                <h1>Smart Electricity Dashboard</h1>
+                <p>
+    Monitor electricity usage, detect waste and manage complaints.
+</p>
+            </div>
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Rooms</h3>
+                <p class="number">{{ total_rooms }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Active Rooms</h3>
+                <p class="number">{{ active_rooms }}</p>
+            </div>
+
+            <div class="card alert-card">
+                <h3>Waste Alerts</h3>
+                <p class="number">{{ total_alerts }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Open Complaints</h3>
+                <p class="number">{{ total_complaints }}</p>
+            </div>
+            <div class="quick-actions">
+
+    <a href="/rooms" class="action-btn">
+        + Add Room
+    </a>
+
+    <a href="/monitoring" class="action-btn">
+        ⚡ Monitor Electricity
+    </a>
+
+    <a href="/complaints" class="action-btn">
+        🛠 Manage Complaints
+    </a>
+
+    <a href="/reports" class="action-btn">
+        📊 View Reports
+    </a>
+
+</div>
+
+
+        </div>
+
+        <section class="panel">
+
+            <h2>Electricity Monitoring</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Room</th>
+                        <th>Status</th>
+                        <th>Occupancy</th>
+                        <th>Power Usage</th>
+                        <th>System Alert</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+{% for alert in alerts %}
+
+<tr>
+    <td>{{ alert["room_no"] }}</td>
+    <td>Active</td>
+    <td>{{ alert["occupancy"] }}</td>
+    <td>{{ alert["power_usage"] }} kW</td>
+    <td class="danger">
+        ⚠ Waste Detected
+    </td>
+</tr>
+
+{% else %}
+
+<tr>
+    <td colspan="5">
+        No electricity waste alerts yet.
+    </td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

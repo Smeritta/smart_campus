@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Complaint Management</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <h2>⚡ EMS</h2>
+
+        <a href="/dashboard">Dashboard</a>
+        <a href="/rooms">Rooms</a>
+        <a href="/complaints">Complaints</a>
+        <a href="/reports">Reports</a>
+
+        <a href="/" class="logout">Logout</a>
+    </aside>
+
+
+    <main class="main-content">
+
+        <div class="topbar">
+            <h1>Complaint Management</h1>
+            <p>Report and track college maintenance complaints.</p>
+        </div>
+
+
+        <section class="panel">
+
+            <h2>Register Complaint</h2>
+
+            <form class="room-form"
+                  action="/add_complaint"
+                  method="POST">
+
+                <div class="form-row">
+
+                    <div>
+                        <label>Room Number</label>
+
+                        <input type="text"
+                               name="room_no"
+                               placeholder="Example: CSE-101"
+                               required>
+                    </div>
+
+
+                    <div>
+                        <label>Priority</label>
+
+                        <select name="priority" required>
+
+                            <option value="">
+                                Select Priority
+                            </option>
+
+                            <option value="Low">
+                                Low
+                            </option>
+
+                            <option value="Medium">
+                                Medium
+                            </option>
+
+                            <option value="High">
+                                High
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <label>Complaint</label>
+
+                    <textarea name="complaint"
+                              placeholder="Example: Fan is not working"
+                              required></textarea>
+
+                </div>
+
+
+                <button type="submit"
+                        class="primary-btn">
+
+                    Submit Complaint
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <section class="panel room-list">
+
+            <h2>Complaint History</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Room</th>
+                        <th>Complaint</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for complaint in complaints %}
+
+                    <tr>
+
+                        <td>
+                            #{{ complaint["id"] }}
+                        </td>
+
+                        <td>
+                            {{ complaint["room_no"] }}
+                        </td>
+
+                        <td>
+                            {{ complaint["complaint"] }}
+                        </td>
+
+                        <td>
+                            {{ complaint["priority"] }}
+                        </td>
+
+                        <td>
+
+    <form action="/update_complaint/{{ complaint['id'] }}"
+          method="POST">
+
+        <select name="status"
+                onchange="this.form.submit()">
+
+            <option value="Open"
+                {% if complaint["status"] == "Open" %}selected{% endif %}>
+                Open
+            </option>
+
+            <option value="In Progress"
+                {% if complaint["status"] == "In Progress" %}selected{% endif %}>
+                In Progress
+            </option>
+
+            <option value="Resolved"
+                {% if complaint["status"] == "Resolved" %}selected{% endif %}>
+                Resolved
+            </option>
+
+        </select>
+
+    </form>
+
+</td>
+
+                    </tr>
+
+                {% else %}
+
+                    <tr>
+
+                        <td colspan="5">
+                            No complaints registered yet.
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>
