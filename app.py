@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, redirect,session
 import sqlite3
+import os
 
 app = Flask(__name__)
 app.secret_key = "college_project_secret"
-DATABASE = "database/electricity.db"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE = os.path.join(BASE_DIR, "database", "electricity.db")
+os.makedirs(os.path.dirname(DATABASE), exist_ok=True)
 
 
 def get_db():
